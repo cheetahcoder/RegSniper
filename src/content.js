@@ -45,10 +45,10 @@
     // --- Persistence (Local Storage) ---
     const saveSettings = () => {
         try {
-            const h = document.getElementById('s-h')?.value || "08";
-            const m = document.getElementById('s-m')?.value || "00";
-            const s = document.getElementById('s-s')?.value || "00";
-            const offset = parseInt(document.getElementById('s-offset')?.value) ?? 800;
+            const h = p2e(document.getElementById('s-h')?.value || "08");
+            const m = p2e(document.getElementById('s-m')?.value || "00");
+            const s = p2e(document.getElementById('s-s')?.value || "00");
+            const offset = parseInt(p2e(document.getElementById('s-offset')?.value)) ?? 800;
             const delay = sniperState.globalDelay || 1500;
             const sound = sniperState.soundEnabled;
 
@@ -189,15 +189,18 @@
         #sniper-settings-area * {
             box-sizing: border-box !important;
         }
-        #sniper-settings-area input[type="number"] {
-            font-family: 'Consolas', monospace !important;
+        #sniper-settings-area input[type="number"],
+        #sniper-settings-area .sniper-persian-num {
+            font-family: inherit !important;
             font-size: 14px !important;
             font-weight: bold !important;
-            color: #111 !important;
+            color: #0f172a !important;
             text-align: center !important;
-            border: 1px solid #ccc !important;
-            border-radius: 4px !important;
-            padding: 4px 2px !important;
+            direction: rtl !important;
+            border: 1px solid #cbd5e1 !important;
+            border-radius: 5px !important;
+            padding: 4px 6px !important;
+            background: #ffffff !important;
         }
         #sniper-toast-container {
             position: fixed;
@@ -972,7 +975,7 @@
             const recommendedOffset = Math.round(rawRecommended / 10) * 10;
 
             if (offsetInput) {
-                offsetInput.value = recommendedOffset;
+                offsetInput.value = e2p(recommendedOffset);
                 sniperState.startOffset = recommendedOffset;
                 saveSettings();
             }
@@ -1144,6 +1147,18 @@
         const initDelay = savedData?.delay || 1500;
 
         settingsSection.innerHTML = `
+            <!-- سربرگ رسمی با لینک گیت‌هاب -->
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 18px; flex-wrap: wrap; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-weight: bold; color: #0f172a; font-size: 14px;">🎯 اسنایپر انتخاب واحد شریف</span>
+                    <span style="background: #e0f2fe; color: #0369a1; font-size: 10px; font-weight: bold; padding: 2px 8px; border-radius: 9999px;">v1.0.0</span>
+                </div>
+                <a href="https://github.com/cheetahcoder/RegSniper" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 6px; background: #0f172a; color: #ffffff; text-decoration: none; font-size: 11px; font-weight: 500; padding: 5px 12px; border-radius: 6px; transition: 0.15s; box-shadow: 0 1px 2px rgba(0,0,0,0.1);" title="مشاهده سورس‌کد در گیت‌هاب">
+                    <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor" style="vertical-align: middle;"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                    <span>cheetahcoder/RegSniper</span>
+                </a>
+            </div>
+
             <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 25px; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 220px;">
                     <h4 style="color: #1b1c1d; margin-bottom: 15px;">کنترل ربات</h4>
@@ -1160,20 +1175,20 @@
                     <h4 style="color: #1b1c1d; margin-bottom: 15px;">تنظیمات زمان‌بندی</h4>
                     <div style="display: flex; gap: 6px; margin-bottom: 8px; align-items: center; direction: ltr; justify-content: flex-end;">
                         <span style="font-size: 11px; color: #888; margin-right: 8px;">(ساعت شروع)</span>
-                        <input type="number" id="s-h" value="${initH}" min="0" max="23" class="sniper-force-en" style="width: 44px; text-align: center;">
+                        <input type="text" inputmode="numeric" id="s-h" value="${e2p(initH)}" class="sniper-persian-num" style="width: 48px; text-align: center;" maxlength="2" title="ساعت">
                         <span style="font-weight: bold;">:</span>
-                        <input type="number" id="s-m" value="${initM}" min="0" max="59" class="sniper-force-en" style="width: 44px; text-align: center;">
+                        <input type="text" inputmode="numeric" id="s-m" value="${e2p(initM)}" class="sniper-persian-num" style="width: 48px; text-align: center;" maxlength="2" title="دقیقه">
                         <span style="font-weight: bold;">:</span>
-                        <input type="number" id="s-s" value="${initS}" min="0" max="59" class="sniper-force-en" style="width: 44px; text-align: center;">
+                        <input type="text" inputmode="numeric" id="s-s" value="${e2p(initS)}" class="sniper-persian-num" style="width: 48px; text-align: center;" maxlength="2" title="ثانیه">
                     </div>
                     <div style="display: flex; gap: 8px; margin-bottom: 12px; align-items: center; justify-content: flex-start; flex-wrap: wrap;">
-                        <input type="number" id="s-offset" value="${initOffset}" min="-5000" max="10000" step="10" class="sniper-force-en" style="width: 72px; text-align: center;">
-                        <span style="font-size: 11px; color: #888;">آفست شروع (ms)</span>
+                        <input type="text" inputmode="numeric" id="s-offset" value="${e2p(initOffset)}" class="sniper-persian-num" style="width: 76px; text-align: center;" title="آفست به میلی‌ثانیه">
+                        <span style="font-size: 11px; color: #888;">آفست شروع (میلی‌ثانیه)</span>
                         <button id="btn-auto-offset" type="button" style="background: #e0f2fe; color: #0284c7; border: 1px solid #7dd3fc; border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.15s;" title="محاسبه خودکار پینگ و اختلاف ساعت با سرور شریف">⚡ محاسبه آفست</button>
                     </div>
                     <div style="display: flex; align-items: center; gap: 12px; direction: ltr;">
                         <input type="range" id="s-gd" min="800" max="3000" step="50" value="${initDelay}" style="flex: 1; cursor: pointer;">
-                        <span class="sniper-force-en" style="font-size: 12px; white-space: nowrap; width: 95px;">Delay: <b id="val-gd">${initDelay}</b> ms</span>
+                        <span style="font-size: 12px; white-space: nowrap; width: 120px; direction: rtl;">تاخیر: <b id="val-gd">${e2p(initDelay)}</b> میلی‌ثانیه</span>
                     </div>
                     <div style="font-size: 11px; color: #64748b; margin-top: 4px;">فاصله بین درخواست‌ها (توصیه: ۱۱۵۰ الی ۱۵۰۰ میلی‌ثانیه)</div>
                 </div>
@@ -1288,7 +1303,7 @@
         const gdInput = document.getElementById('s-gd');
         if (gdInput) {
             gdInput.oninput = (e) => {
-                document.getElementById('val-gd').innerText = e.target.value;
+                document.getElementById('val-gd').innerText = e2p(e.target.value);
                 sniperState.globalDelay = parseInt(e.target.value);
                 saveSettings();
             };
@@ -1296,7 +1311,14 @@
 
         ['s-h', 's-m', 's-s', 's-offset'].forEach(id => {
             const el = document.getElementById(id);
-            if (el) el.onchange = saveSettings;
+            if (el) {
+                el.oninput = () => {
+                    const raw = el.value;
+                    const converted = e2p(raw);
+                    if (raw !== converted) el.value = converted;
+                };
+                el.onchange = saveSettings;
+            }
         });
 
         const btnAutoOffset = document.getElementById('btn-auto-offset');
@@ -1347,10 +1369,10 @@
             }
             initKnownJobs();
             setupCapacityWatcher();
-            let h = parseInt(document.getElementById('s-h').value) || 0;
-            const m = parseInt(document.getElementById('s-m').value) || 0;
-            const s = parseInt(document.getElementById('s-s').value) || 0;
-            const offset = parseInt(document.getElementById('s-offset')?.value) || 0;
+            let h = parseInt(p2e(document.getElementById('s-h').value)) || 0;
+            const m = parseInt(p2e(document.getElementById('s-m').value)) || 0;
+            const s = parseInt(p2e(document.getElementById('s-s').value)) || 0;
+            const offset = parseInt(p2e(document.getElementById('s-offset')?.value)) || 0;
             
             // Smart 12h -> 24h conversion: if user entered 1..11 in afternoon/evening (e.g. 4 for 16:00)
             const currentHour = new Date().getHours();
@@ -1363,8 +1385,8 @@
                     if (testPm.getTime() + offset > Date.now()) {
                         h += 12;
                         const hInput = document.getElementById('s-h');
-                        if (hInput) hInput.value = h.toString().padStart(2, '0');
-                        notify(`ساعت شروع به صورت خودکار به فرمت ۲۴ ساعته (${h}:${m.toString().padStart(2, '0')}) تنظیم شد.`, "info");
+                        if (hInput) hInput.value = e2p(h.toString().padStart(2, '0'));
+                        notify(`ساعت شروع به صورت خودکار به فرمت ۲۴ ساعته (${e2p(h)}:${e2p(m.toString().padStart(2, '0'))}) تنظیم شد.`, "info");
                     }
                 }
             }
@@ -1380,13 +1402,17 @@
             const diff = targetTimestamp - Date.now();
             if (diff > 0) {
                 sniperState.isStandby = true;
+                const hStr = e2p(h.toString().padStart(2, '0'));
+                const mStr = e2p(m.toString().padStart(2, '0'));
+                const sStr = e2p(s.toString().padStart(2, '0'));
+                const offsetP = e2p(Math.abs(offset));
+                const offsetSign = offset >= 0 ? `+${offsetP}` : `-${offsetP}`;
                 if (statusText) {
                     statusText.style.color = "#f59e0b";
-                    statusText.innerText = `● آماده‌باش (شروع در ${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')})`;
+                    statusText.innerText = `● آماده‌باش (شروع در ${hStr}:${mStr}:${sStr})`;
                 }
-                const offsetSign = offset >= 0 ? `+${offset}` : `${offset}`;
-                notify(`آماده‌باش: شروع شلیک در ساعت ${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')} (آفست: ${offsetSign}ms)`, "info");
-                addLog(`⏳ حالت آماده‌باش فعال شد. اسنایپر تا رسیدن به ساعت ${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')} کاملاً غیرفعال خواهد بود.`);
+                notify(`آماده‌باش: شروع شلیک در ساعت ${hStr}:${mStr}:${sStr} (آفست: ${offsetSign}ms)`, "info");
+                addLog(`⏳ حالت آماده‌باش فعال شد. اسنایپر تا رسیدن به ساعت ${hStr}:${mStr}:${sStr} کاملاً غیرفعال خواهد بود.`);
                 
                 if (sniperState.standbyTimeout) clearTimeout(sniperState.standbyTimeout);
                 sniperState.standbyTimeout = setTimeout(() => {
