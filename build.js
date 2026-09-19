@@ -78,6 +78,17 @@ if (fs.existsSync(sharifFolder)) {
     console.log('>>> [SYNC] Synchronized updated bundle to Sharif RegSniper/ folder.');
 }
 
+// 6. Automatically generate compliant clean-source ZIP for Mozilla Firefox AMO
+const { execSync } = require('child_process');
+const firefoxZip = path.join(rootDir, 'Sharif-RegSniper-Firefox.zip');
+try {
+    const psCmd = `Add-Type -AssemblyName System.IO.Compression; Add-Type -AssemblyName System.IO.Compression.FileSystem; if (Test-Path '${firefoxZip}') { Remove-Item '${firefoxZip}' }; $archive = [System.IO.Compression.ZipFile]::Open('${firefoxZip}', [System.IO.Compression.ZipArchiveMode]::Create); [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($archive, '${path.join(srcDir, 'manifest.json').replace(/\\/g, '\\\\')}', 'manifest.json'); [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($archive, '${path.join(srcDir, 'content.js').replace(/\\/g, '\\\\')}', 'content.js'); Get-ChildItem -Path '${iconsDir.replace(/\\/g, '\\\\')}' -File | ForEach-Object { [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($archive, $_.FullName, 'icons/' + $_.Name) }; $archive.Dispose()`;
+    execSync(`powershell -NoProfile -Command "${psCmd}"`);
+    console.log(`>>> [AMO] Built clean Mozilla Firefox package: Sharif-RegSniper-Firefox.zip`);
+} catch (e) {
+    console.warn('>>> Warning: Could not generate Firefox zip automatically:', e.message);
+}
+
 console.log('\n======================================================');
 console.log(' Extension build completed successfully!');
 console.log(' Unpacked extension path: ' + distDir);

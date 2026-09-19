@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Sharif RegSniper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Smart automated registration assistant for Sharif University EDU portal",
   "homepage_url": "https://github.com/cheetahcoder/RegSniper",
   "icons": {
