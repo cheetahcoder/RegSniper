@@ -1,0 +1,17 @@
+# Node dependencies
+node_modules/
+
+# Diagnostic scripts & test data
+rate-finder.js
+tools/
+SharifOffsetCalculator.exe
+*.har
+
+# Archive files & temporary bundles
+*.rar
+*.zip
+Sharif RegSniper/
+
+# OS specific files
+.DS_Store
+Thumbs.db
