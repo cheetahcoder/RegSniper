@@ -40,12 +40,16 @@
    ```bash
    git clone https://github.com/cheetahcoder/RegSniper.git
    ```
-2. مرورگر خود (Chrome / Edge / Brave) را باز کرده و به آدرس مدیریت افزونه‌ها بروید:
-   - در گوگل کروم: `chrome://extensions`
-   - در مایکروسافت اج: `edge://extensions`
-3. در گوشه بالای صفحه، گزینه **Developer mode** (حالت توسعه‌دهنده) را فعال کنید.
-4. روی دکمه **Load unpacked** (بارگذاری بسته باز شده) کلیک کرده و پوشه `dist` موجود در پروژه را انتخاب کنید.
-5. وارد سامانه انتخاب واحد شریف (`https://my.edu.sharif.edu/`) شوید؛ پنل اسنایپر به صورت خودکار به صفحه تزریق می‌شود!
+2. مرورگر خود را باز کرده و به بخش افزونه‌ها بروید:
+   - **گوگل کروم / مایکروسافت اج / بریو:**
+     - آدرس `chrome://extensions` یا `edge://extensions` را باز کنید.
+     - گزینه **Developer mode** را روشن کنید.
+     - روی **Load unpacked** کلیک کرده و پوشه `dist` را انتخاب کنید.
+   - **موزیلا فایرفاکس (Mozilla Firefox):**
+     - آدرس `about:debugging#/runtime/this-firefox` را باز کنید.
+     - روی دکمه **Load Temporary Add-on...** کلیک کنید.
+     - فایل `dist/manifest.json` را انتخاب کنید.
+3. وارد سامانه انتخاب واحد شریف (`https://my.edu.sharif.edu/`) شوید؛ پنل اسنایپر به صورت خودکار اجرا می‌شود!
 
 ---
 
